@@ -1,0 +1,11 @@
+<component xmlns="http://www.osgi.org/xmlns/scr/v1.1.0" name="consul.annotation.scanner"
+	modified="modified">
+	<implementation class="net.wasdev.sample.annotation.scanning.Scanner" />
+	<reference name="mbean" interface="javax.management.DynamicMBean"
+		target="(type=endpoint)" cardinality="0..n" policy="static" bind="bindBean"
+		unbind="unbindBean" />
+	<service>
+		<provide interface="com.ibm.ws.container.service.state.ModuleStateListener" />
+	</service>
+
+</component>

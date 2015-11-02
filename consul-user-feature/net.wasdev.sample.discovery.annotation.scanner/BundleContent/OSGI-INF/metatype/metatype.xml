@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metatype:MetaData xmlns:metatype="http://www.osgi.org/xmlns/metatype/v1.1.0" >
+
+	<OCD name="consul-ocd" description="Configuration for the Consul server" id="consul-ocd">
+		<AD description="a consul server" id="server" type="String" />
+	</OCD>
+
+	<Designate pid="consul.annotation.scanner">
+		<Object ocdref="consul-ocd" />
+	</Designate>
+
+</metatype:MetaData>
