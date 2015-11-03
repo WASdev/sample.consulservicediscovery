@@ -16,6 +16,17 @@ There are two user features, one which provides the basic consul api, and one wh
 
 The consul project wraps the consul jars and dependencies into an OSGi bundle, and the discovery.annotation project is the source for the annotation scanning. 
 
+### Example server configuration 
+
+To use and configure the feature, add the following to the server.xml of your Liberty server: 
+
+	<!-- Enable features -->
+	<featureManager>
+		<feature>usr:consulDiscovery</feature>
+	</featureManager>
+
+	<consul.annotation.scanner server="my.consul.hostname" />
+
 ### Configuring the location of the Consul server
 
 If you’re running in an environment like Bluemix, configuring services via environment variables is preferable to setting them up in the server.xml. If the CONSUL_SERVER environment variable is set, it will be preferred instead of the configured server. CONSUL_SERVER should be set to a host name or IP address. 
