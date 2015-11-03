@@ -1,0 +1,196 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>liberty-consul</groupId>
+  <artifactId>discovery.annotation.scanner</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+  <name>Liberty annotation scanner plugin</name>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>https://github.com/WASdev/sample.consulservicediscovery/blob/master/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+	<repositories>
+		<repository>
+			<id>wlp-javaee7-8.5.5.6</id>
+			<url>file://${project.basedir}/repo</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.ecwid.consul</groupId>
+			<artifactId>consul-api</artifactId>
+			<version>1.1.6</version>
+		</dependency>
+  		<dependency>
+  			<groupId>javax.ws.rs</groupId>
+  			<artifactId>javax.ws.rs-api</artifactId>
+  			<version>2.0.1</version>
+  			<scope>provided</scope>
+  		</dependency>
+  		<dependency>
+  			<groupId>org.osgi</groupId>
+  			<artifactId>org.osgi.service.component</artifactId>
+  			<version>1.3.0</version>
+  			<scope>provided</scope>
+  		</dependency>
+  		
+  		<!-- Liberty SPI -->
+  		<dependency>
+  			<groupId>com.ibm.websphere.appserver.spi</groupId>
+  			<artifactId>anno</artifactId>
+  			<version>1.0.9</version>
+  			<scope>provided</scope>
+  		</dependency>
+  		<dependency>
+  			<groupId>com.ibm.websphere.appserver.spi</groupId>
+  			<artifactId>containerServices</artifactId>
+  			<version>1.2.9</version>
+  			<scope>provided</scope>
+  		</dependency>
+		<dependency>
+  			<groupId>com.ibm.websphere.appserver.spi</groupId>
+  			<artifactId>artifact</artifactId>
+  			<version>1.2.9</version>
+  			<scope>provided</scope>
+  		</dependency>
+
+		<!-- Liberty API -->
+  		<dependency>
+  			<groupId>com.ibm.websphere.appserver.api</groupId>
+  			<artifactId>endPoint</artifactId>
+  			<version>1.0.9</version>
+  			<scope>provided</scope>
+  		</dependency>
+	</dependencies>    
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+        	<!-- Copy any libraries -->
+        	<plugin>
+        		<groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                	<outputDirectory>${project.build.directory}/classes</outputDirectory>
+             		<resources>
+             			<resource>
+             				<directory>${basedir}/lib</directory>
+             			</resource>
+             			<resource>
+             				<directory>${basedir}/BundleContent</directory>
+             				<includes>
+             					<include>OSGI-INF/**/*</include>
+             				</includes>
+             			</resource>
+             		</resources>
+                </configuration>
+                <executions>
+                	<execution>
+                		<id>Copy libraries</id>
+                		<phase>process-resources</phase>
+                		<goals>
+                			<goal>copy-resources</goal>
+                		</goals>
+                	</execution>
+                </executions>
+        	</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<!-- Convert to Liberty Naming convention -->
+					<finalName>${project.artifactId}_${project.version}</finalName>
+					<archive>
+						<manifestFile>${basedir}/BundleContent/META-INF/MANIFEST.MF</manifestFile>
+					</archive>
+				</configuration>
+			</plugin>
+        	<!-- Install the required jars into the server structure -->
+        	<plugin>
+        		<groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.10</version>
+                <configuration>
+					<artifactItems>
+						<artifactItem>
+							<groupId>com.ecwid.consul</groupId>
+							<artifactId>consul-api</artifactId>
+							<version>1.1.6</version>
+							<type>jar</type>
+							<overWrite>false</overWrite>
+							<destFileName>consul-api.jar</destFileName>
+						</artifactItem>
+						<artifactItem>
+							<groupId>org.apache.httpcomponents</groupId>
+							<artifactId>httpcore</artifactId>
+							<version>4.3</version>
+							<type>jar</type>
+							<overWrite>false</overWrite>
+							<destFileName>httpcore.jar</destFileName>
+						</artifactItem>
+						<artifactItem>
+							<groupId>org.apache.httpcomponents</groupId>
+							<artifactId>httpclient</artifactId>
+							<version>4.3.1</version>
+							<type>jar</type>
+							<overWrite>false</overWrite>
+							<destFileName>httpclient.jar</destFileName>
+						</artifactItem>
+						<artifactItem>
+							<groupId>com.google.code.gson</groupId>
+							<artifactId>gson</artifactId>
+							<version>2.2</version>
+							<type>jar</type>
+							<overWrite>false</overWrite>
+							<destFileName>gson.jar</destFileName>
+						</artifactItem>
+						<artifactItem>
+							<groupId>commons-logging</groupId>
+							<artifactId>commons-logging</artifactId>
+							<version>1.1.3</version>
+							<type>jar</type>
+							<overWrite>false</overWrite>
+							<destFileName>commons-logging.jar</destFileName>
+						</artifactItem>
+						<artifactItem>
+							<groupId>commons-codec</groupId>
+							<artifactId>commons-codec</artifactId>
+							<version>1.6</version>
+							<type>jar</type>
+							<overWrite>false</overWrite>
+							<destFileName>commons-codec.jar</destFileName>
+						</artifactItem>
+					</artifactItems>
+					<outputDirectory>${project.build.directory}/classes</outputDirectory>
+                </configuration>
+                <executions>
+                	<execution>
+                		<id>Install repository libs not provided by Liberty</id>
+                		<phase>process-resources</phase>
+                		<goals>
+                			<goal>copy</goal>
+                		</goals>
+                	</execution>
+                </executions>
+        	</plugin> 
+        </plugins>
+	</build>
+
+</project>

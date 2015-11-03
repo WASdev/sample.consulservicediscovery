@@ -19,11 +19,11 @@ package net.wasdev.annotation.scanning;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import com.ecwid.consul.transport.TransportException;
 import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.agent.model.NewService;
-import com.ibm.ws.util.UUID;
 
 public class ConsulServicePublisher {
 
@@ -47,7 +47,7 @@ public class ConsulServicePublisher {
 
 			// Make sure the id is unique even if multiple instances of a
 			// service exist
-			String id = name.replace('/', '_') + new UUID();
+			String id = name.replace('/', '_') + UUID.randomUUID();
 			System.out.println("Registering service with id " + id + " at "
 					+ name);
 			service.setId(id);

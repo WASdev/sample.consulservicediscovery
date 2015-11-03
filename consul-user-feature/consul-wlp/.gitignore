@@ -1,7 +1,4 @@
-/bin
-/lib
-/.DS_Store
 /target
+/.settings
 /.classpath
 /.project
-/repo
