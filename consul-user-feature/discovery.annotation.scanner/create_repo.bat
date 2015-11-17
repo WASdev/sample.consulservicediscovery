@@ -30,11 +30,12 @@ mkdir %REPO_HOME%
 echo.
 :skip_create
 
-echo Adding Liberty APIs
-FOR /F "tokens=1,2 delims=_" %%A IN ('dir %1\dev\api\ibm\*.jar /B') DO call :add_to_repo %%A %%B %1\dev\api\ibm\%%A_%%B
+REM these lines are only required if you are creating a local Liberty repository
+REM echo Adding Liberty APIs
+REM FOR /F "tokens=1,2 delims=_" %%A IN ('dir %1\dev\api\ibm\*.jar /B') DO call :add_to_repo %%A %%B %1\dev\api\ibm\%%A_%%B
 
-echo Adding Liberty SPIs
-FOR /F "tokens=1,2 delims=_" %%A IN ('dir %1\dev\spi\ibm\*.jar /B') DO call :add_to_repo %%A %%B %1\dev\spi\ibm\%%A_%%B
+REM echo Adding Liberty SPIs
+REM FOR /F "tokens=1,2 delims=_" %%A IN ('dir %1\dev\spi\ibm\*.jar /B') DO call :add_to_repo %%A %%B %1\dev\spi\ibm\%%A_%%B
 
 echo Adding Liberty compatibility
 FOR /F "tokens=1,2 delims=_" %%A IN ('dir %1\lib\com.ibm.ws.compat_*.jar /B') DO call :add_to_repo %%A %%B %1\lib\%%A_%%B
@@ -43,13 +44,12 @@ goto end
 :add_to_repo <result> <artifact> <file> <fullpath>
 (
 	echo Source   : %3
-    echo GroupID  : %~n1
-    echo Artifact : %~x1 [without the dot]
+    echo GroupID  : com.ibm.websphere.appserver.api
+    echo Artifact : %1
     echo Version  : %~n2
     
-    FOR /F "tokens=1* delims=." %%A IN ("%~x1") DO (     
-    	cmd /C mvn install:install-file -Dfile="%3" -DgroupId=%~n1 -DartifactId=%%A -Dversion=%~n2 -Dpackaging=jar -DlocalRepositoryPath=%REPO_HOME%
-    )
+   	cmd /C mvn install:install-file -Dfile="%3" -DgroupId=com.ibm.websphere.appserver.api -DartifactId=%1 -Dversion=%~n2 -Dpackaging=jar -DlocalRepositoryPath=%REPO_HOME%
+
     echo.
  
     exit /b

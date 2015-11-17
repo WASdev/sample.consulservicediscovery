@@ -18,16 +18,16 @@
 
 	<repositories>
 		<repository>
-			<id>wlp-javaee7-8.5.5.6</id>
-			<url>file://${project.basedir}/repo</url>
+			<id>wlp-javaee7-8.5.5.7</id>
+			<url>http://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/maven/repository</url>
 		</repository>
 	</repositories>
 
 	<dependencies>
 		<dependency>
-			<groupId>com.ecwid.consul</groupId>
-			<artifactId>consul-api</artifactId>
-			<version>1.1.6</version>
+  			<groupId>liberty-consul</groupId>
+  			<artifactId>consul.api</artifactId>
+  			<version>1.0.0</version>
 		</dependency>
   		<dependency>
   			<groupId>javax.ws.rs</groupId>
@@ -42,34 +42,26 @@
   			<scope>provided</scope>
   		</dependency>
   		
-  		<!-- Liberty SPI -->
-  		<dependency>
-  			<groupId>com.ibm.websphere.appserver.spi</groupId>
-  			<artifactId>anno</artifactId>
-  			<version>1.0.9</version>
-  			<scope>provided</scope>
-  		</dependency>
-  		<dependency>
-  			<groupId>com.ibm.websphere.appserver.spi</groupId>
-  			<artifactId>containerServices</artifactId>
-  			<version>1.2.9</version>
-  			<scope>provided</scope>
-  		</dependency>
-		<dependency>
-  			<groupId>com.ibm.websphere.appserver.spi</groupId>
-  			<artifactId>artifact</artifactId>
-  			<version>1.2.9</version>
-  			<scope>provided</scope>
-  		</dependency>
-
-		<!-- Liberty API -->
-  		<dependency>
-  			<groupId>com.ibm.websphere.appserver.api</groupId>
-  			<artifactId>endPoint</artifactId>
-  			<version>1.0.9</version>
-  			<scope>provided</scope>
-  		</dependency>
-	</dependencies>    
+  		<!-- 
+  		You will need to install this into your local maven repository from 
+  		http://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/maven/repository/com/ibm/tools/target/was-liberty/8.5.x.4/was-liberty-8.5.x.4.pom
+  		
+  		using
+  		
+ 		mvn install:install-file -Dpackaging=pom -Dfile=was-liberty-8.5.x.4.pom -DpomFile=was-liberty-8.5.x.4.pom
+ 		
+ 		notes : 
+ 		1. this pom equates to 8.5.5.7 version of Liberty, if you are using an earlier version then you will
+ 		need to import an earlier version of this pom.
+  		 -->
+        <dependency>
+            <groupId>com.ibm.tools.target</groupId>
+            <artifactId>was-liberty</artifactId>
+            <version>8.5.x.4</version>
+            <type>pom</type>
+        </dependency>
+	</dependencies>  
+	  
 	<build>
 		<plugins>
 			<plugin>
@@ -96,6 +88,7 @@
              				<directory>${basedir}/BundleContent</directory>
              				<includes>
              					<include>OSGI-INF/**/*</include>
+             					<include>META-INF/**/*</include>
              				</includes>
              			</resource>
              		</resources>
@@ -122,74 +115,6 @@
 					</archive>
 				</configuration>
 			</plugin>
-        	<!-- Install the required jars into the server structure -->
-        	<plugin>
-        		<groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.10</version>
-                <configuration>
-					<artifactItems>
-						<artifactItem>
-							<groupId>com.ecwid.consul</groupId>
-							<artifactId>consul-api</artifactId>
-							<version>1.1.6</version>
-							<type>jar</type>
-							<overWrite>false</overWrite>
-							<destFileName>consul-api.jar</destFileName>
-						</artifactItem>
-						<artifactItem>
-							<groupId>org.apache.httpcomponents</groupId>
-							<artifactId>httpcore</artifactId>
-							<version>4.3</version>
-							<type>jar</type>
-							<overWrite>false</overWrite>
-							<destFileName>httpcore.jar</destFileName>
-						</artifactItem>
-						<artifactItem>
-							<groupId>org.apache.httpcomponents</groupId>
-							<artifactId>httpclient</artifactId>
-							<version>4.3.1</version>
-							<type>jar</type>
-							<overWrite>false</overWrite>
-							<destFileName>httpclient.jar</destFileName>
-						</artifactItem>
-						<artifactItem>
-							<groupId>com.google.code.gson</groupId>
-							<artifactId>gson</artifactId>
-							<version>2.2</version>
-							<type>jar</type>
-							<overWrite>false</overWrite>
-							<destFileName>gson.jar</destFileName>
-						</artifactItem>
-						<artifactItem>
-							<groupId>commons-logging</groupId>
-							<artifactId>commons-logging</artifactId>
-							<version>1.1.3</version>
-							<type>jar</type>
-							<overWrite>false</overWrite>
-							<destFileName>commons-logging.jar</destFileName>
-						</artifactItem>
-						<artifactItem>
-							<groupId>commons-codec</groupId>
-							<artifactId>commons-codec</artifactId>
-							<version>1.6</version>
-							<type>jar</type>
-							<overWrite>false</overWrite>
-							<destFileName>commons-codec.jar</destFileName>
-						</artifactItem>
-					</artifactItems>
-					<outputDirectory>${project.build.directory}/classes</outputDirectory>
-                </configuration>
-                <executions>
-                	<execution>
-                		<id>Install repository libs not provided by Liberty</id>
-                		<phase>process-resources</phase>
-                		<goals>
-                			<goal>copy</goal>
-                		</goals>
-                	</execution>
-                </executions>
-        	</plugin> 
         </plugins>
 	</build>
 

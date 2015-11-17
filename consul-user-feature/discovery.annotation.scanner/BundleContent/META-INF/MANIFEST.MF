@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: annotation.scanner
 Bundle-SymbolicName: discovery.annotation.scanner
 Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Service-Component: OSGI-INF/ScanningService.xml
 Import-Package: com.ibm.websphere.endpoint;version="1.0.0",
  com.ibm.websphere.servlet.event;version="1.1.0",
@@ -26,22 +26,7 @@ Import-Package: com.ibm.websphere.endpoint;version="1.0.0",
  javax.net,
  javax.net.ssl,
  org.osgi.framework;version="1.7.0",
- org.osgi.service.component;version="1.2.0"
-Export-Package: com.ecwid.consul,
- com.ecwid.consul.transport,
- com.ecwid.consul.v1,
- com.ecwid.consul.v1.acl.model,
- com.ecwid.consul.v1.agent.model,
- com.ecwid.consul.v1.catalog.model,
- com.ecwid.consul.v1.event.model,
- com.ecwid.consul.v1.health.model,
- com.ecwid.consul.v1.kv.model,
- com.ecwid.consul.v1.session.model
-Bundle-ClassPath: .,
- consul-api.jar,
- httpcore.jar,
- httpclient.jar,
- gson.jar,
- commons-logging.jar,
- commons-codex.jar
- 
+ org.osgi.service.component;version="1.2.0",
+ com.ecwid.consul.transport;version="1.0.0",
+ com.ecwid.consul.v1;version="1.0.0",
+ com.ecwid.consul.v1.agent.model;version="1.0.0"

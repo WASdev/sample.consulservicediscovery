@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>liberty-consul</groupId>
+  <artifactId>consulDiscovery</artifactId>
+  <version>1.0.0</version>
+  <packaging>esa</packaging>
+  <name>Liberty Consul feature</name>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>https://github.com/WASdev/sample.consulservicediscovery/blob/master/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+	<dependencies>
+		<dependency>
+			<groupId>liberty-consul</groupId>
+			<artifactId>consul.api</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+  		<dependency>
+  			<groupId>liberty-consul</groupId>
+  			<artifactId>discovery.annotation.scanner</artifactId>
+  			<version>1.0.0</version>
+  		</dependency>
+	</dependencies>    
+	<build>
+		<plugins>
+	      <plugin>
+	        <groupId>org.apache.aries</groupId>
+	        <artifactId>esa-maven-plugin</artifactId>
+	        <version>1.0.0</version>
+	        <extensions>true</extensions>
+	        <configuration>
+	          <subsystemManifestFile>${basedir}/OSGI-INF/SUBSYSTEM.MF</subsystemManifestFile>
+	          <finalName>${project.artifactId}_${project.version}</finalName>
+	        </configuration>
+	      </plugin>
+        </plugins>
+	</build>
+
+</project>
