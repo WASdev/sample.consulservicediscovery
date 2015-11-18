@@ -23,6 +23,8 @@ public class Endpoint {
 	private final String path;
 	private final int port;
 	private final String host;
+	private final String id;	//convenience ID for this end point
+	private final String name;
 
 	/**
 	 * A path which can be accessed to see if the application is up. Defaults to
@@ -30,16 +32,17 @@ public class Endpoint {
 	 */
 	private String healthCheckPath = "/";
 
-	public Endpoint(String host, int port, String path) {
+	public Endpoint(String host, int port, String path, String name) {
 		this.port = port;
 		this.path = path;
-
 		// If we're listening on all interfaces, just choose one
 		if ("*".equals(host)) {
 			this.host = getInternetHost();
 		} else {
 			this.host = host;
 		}
+		id = host + port + path;
+		this.name = (name == null) ? id : name;
 	}
 
 	/**
@@ -108,4 +111,31 @@ public class Endpoint {
 		this.healthCheckPath = applicationPath;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof Endpoint) {
+			return id.equals(((Endpoint)o).id);
+		}
+		return false; 
+	}
+
+	@Override
+	public int hashCode() {
+		return id.hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getId() {
+		return id;
+	}
+	
+	
 }

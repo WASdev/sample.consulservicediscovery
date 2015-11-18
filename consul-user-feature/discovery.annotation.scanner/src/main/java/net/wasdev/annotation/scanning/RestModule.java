@@ -87,8 +87,18 @@ public class RestModule {
 			// they're
 			// 'extra' information
 
-			String uri = contextRoot + applicationPath + "/" + path;
-			Endpoint newEndpoint = new Endpoint(host, port, uri);
+			String uri = contextRoot + applicationPath;
+			if(path.charAt(0) != '/') {
+				//spec states that leading /'s are ignored, but doesn't stop it being declared, so check
+				uri += "/";
+			}
+			uri += path;
+			
+			//use the name of the class as the name of the service to register
+			int pos = s.lastIndexOf('.');
+			String name = (pos == -1) ? s : s.substring(pos + 1);
+			
+			Endpoint newEndpoint = new Endpoint(host, port, uri, name);
 
 			// Hitting a rest endpoint might have an action, so lets just
 			// check the server is up occasionally. If it stops gracefully,

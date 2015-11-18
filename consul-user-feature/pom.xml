@@ -1,0 +1,27 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>liberty-consul</groupId>
+    <artifactId>liberty-consul</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+    <name>Liberty user feature to auto publish REST end points to a Consul server</name>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <distribution>repo</distribution>
+            <url>https://github.com/WASdev/sample.consulservicediscovery/blob/master/LICENSE</url>
+        </license>
+    </licenses>
+    
+    <modules>
+        <module>consul.api-bundle</module>
+        <module>discovery.annotation.scanner</module>
+		<module>consul-discovery</module>
+		<module>consul-wlp</module>
+    </modules>
+
+
+</project>

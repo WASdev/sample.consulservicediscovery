@@ -16,14 +16,15 @@
 
 package net.wasdev.annotation.scanning;
 
+import java.security.MessageDigest;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import com.ecwid.consul.transport.TransportException;
 import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.agent.model.NewService;
-import com.ibm.ws.util.UUID;
 
 public class ConsulServicePublisher {
 
@@ -36,23 +37,43 @@ public class ConsulServicePublisher {
 		client = new ConsulClient(consulServer);
 	}
 
+	/**
+	 * Generates a unique name for a service but ensure that
+	 * if the same service is registered it will produce the same
+	 * ID. This stops multiple registrations from the same Liberty
+	 * server for the same service.
+	 * 
+	 * @param name name of the service
+	 * @return ID to use
+	 */
+	private String generateID(Endpoint endpoint) {
+		try {
+			MessageDigest digest = MessageDigest.getInstance("SHA-256");
+			byte[] hash = digest.digest(endpoint.getId().getBytes());
+			StringBuilder builder = new StringBuilder();
+			for(int i = 0; i < hash.length; i++) {
+				builder.append(Long.toHexString(0xff & hash[i]));
+			}
+			return endpoint.getName().replace('/', '_') + builder.toString();
+		} catch (Exception e) {
+			//fallback option for generating a unique ID
+			return endpoint.getName().replace('/', '_') + UUID.randomUUID();
+		}
+	}
+	
 	public void init(RestModule module) {
-
 		Collection<Endpoint> endpoints = module.getEndpoints();
 		System.out.println("Will register " + endpoints.size()
 				+ " endpoints for this module.");
 		for (final Endpoint endpoint : endpoints) {
 			final NewService service = new NewService();
-			String name = endpoint.getPath().replaceAll("/", "");
-
 			// Make sure the id is unique even if multiple instances of a
 			// service exist
-			String id = name.replace('/', '_') + new UUID();
-			System.out.println("Registering service with id " + id + " at "
-					+ name);
+			String id = generateID(endpoint);
+			System.out.println("Registering service with id " + id + " at " + endpoint.getName());
 			service.setId(id);
 			serviceIds.add(id);
-			service.setName(name);
+			service.setName(endpoint.getName());
 			service.setPort(endpoint.getPort());
 			String hostAddress = endpoint.getHost();
 			service.setAddress(hostAddress);
