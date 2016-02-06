@@ -129,8 +129,13 @@ public class Scanner implements ModuleStateListener {
 		} else {
 			consulServer = consulEnv;
 		}
-		servicePublisher = new ConsulServicePublisher(consulServer);
-
+		if (cc.getProperties().get("port") != null)
+		{
+		    Integer consulPort = (Integer) cc.getProperties().get("port");
+		    servicePublisher = new ConsulServicePublisher(consulServer, consulPort);
+	    } else {
+    		servicePublisher = new ConsulServicePublisher(consulServer);
+		}
 	}
 
 	protected void modified(Map<?, ?> newProperties) {

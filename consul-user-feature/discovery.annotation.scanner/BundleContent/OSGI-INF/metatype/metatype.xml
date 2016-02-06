@@ -18,6 +18,7 @@
 
 	<OCD name="consul-ocd" description="Configuration for the Consul server" id="consul-ocd">
 		<AD description="a consul server" id="server" type="String" />
+		<AD description="port for consul server" id="port" type="Integer" />
 	</OCD>
 
 	<Designate pid="consul.annotation.scanner">
