@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<deployment id="net.wasdev.sample.consul.api">
-    <runtime id="WebSphere Application Server V8.5 Liberty Profile"/>
-</deployment>
