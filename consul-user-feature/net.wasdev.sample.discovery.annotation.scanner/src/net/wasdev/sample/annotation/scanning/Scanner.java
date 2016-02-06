@@ -119,7 +119,7 @@ public class Scanner implements ModuleStateListener {
 
 	protected void modified(Map<?, ?> newProperties) {
 		// If we're using the environment variable, don't do anything
-		if (consulEnv != null) {
+		if (consulEnv == null) {
 			consulServer = (String) newProperties.get("server");
 			// Redo any registrations
 			servicePublisher = new ConsulServicePublisher(consulServer);
