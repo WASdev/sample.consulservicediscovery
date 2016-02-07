@@ -37,6 +37,11 @@ public class ConsulServicePublisher {
 		client = new ConsulClient(consulServer);
 	}
 
+	public ConsulServicePublisher(String consulServer, Integer consulPort) {
+		this.consulServer = consulServer;
+		client = new ConsulClient(consulServer, consulPort);
+	}
+
 	/**
 	 * Generates a unique name for a service but ensure that
 	 * if the same service is registered it will produce the same
