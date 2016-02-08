@@ -72,13 +72,15 @@ public class ConsulServicePublisher {
 				+ " endpoints for this module.");
 		for (final Endpoint endpoint : endpoints) {
 			final NewService service = new NewService();
+			String name = endpoint.getPath().replaceAll("/", "");
 			// Make sure the id is unique even if multiple instances of a
 			// service exist
 			String id = generateID(endpoint);
 			System.out.println("Registering service with id " + id + " at " + endpoint.getName());
 			service.setId(id);
 			serviceIds.add(id);
-			service.setName(endpoint.getName());
+			// Use the path, not the classname, as an identifier for the service
+			service.setName(name);
 			service.setPort(endpoint.getPort());
 			String hostAddress = endpoint.getHost();
 			service.setAddress(hostAddress);
