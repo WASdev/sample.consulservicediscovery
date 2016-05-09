@@ -23,7 +23,7 @@ public class Endpoint {
 	private final String path;
 	private final int port;
 	private final String host;
-	private final String id;	//convenience ID for this end point
+	private final String id; // convenience ID for this end point
 	private final String name;
 
 	/**
@@ -54,18 +54,15 @@ public class Endpoint {
 		String inetHost = "unknown";
 		try {
 
-			Enumeration<NetworkInterface> n = NetworkInterface
-					.getNetworkInterfaces();
+			Enumeration<NetworkInterface> n = NetworkInterface.getNetworkInterfaces();
 			while (n.hasMoreElements()) {
 				NetworkInterface e = n.nextElement();
-				System.out
-						.println("Checking network interface: " + e.getName());
+				System.out.println("Checking network interface: " + e.getName());
 				Enumeration<InetAddress> a = e.getInetAddresses();
 				while (a.hasMoreElements()) {
 					InetAddress addr = a.nextElement();
 					System.out.println(addr.getHostAddress());
-					if (!addr.isLoopbackAddress()
-							&& addr instanceof Inet4Address) {
+					if (!addr.isLoopbackAddress() && addr instanceof Inet4Address) {
 						System.out.println("Using " + addr.getHostAddress());
 						return addr.getHostAddress();
 					}
@@ -113,10 +110,10 @@ public class Endpoint {
 
 	@Override
 	public boolean equals(Object o) {
-		if(o instanceof Endpoint) {
-			return id.equals(((Endpoint)o).id);
+		if (o instanceof Endpoint) {
+			return id.equals(((Endpoint) o).id);
 		}
-		return false; 
+		return false;
 	}
 
 	@Override
@@ -136,6 +133,5 @@ public class Endpoint {
 	public String getId() {
 		return id;
 	}
-	
-	
+
 }
