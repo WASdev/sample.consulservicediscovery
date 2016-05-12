@@ -1,7 +1,5 @@
 package net.wasdev.annotation.scanning;
 
-import java.io.IOException;
-
 /**
  * (C) Copyright IBM Corporation 2015.
  *
@@ -17,6 +15,8 @@ import java.io.IOException;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import java.io.IOException;
+
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
