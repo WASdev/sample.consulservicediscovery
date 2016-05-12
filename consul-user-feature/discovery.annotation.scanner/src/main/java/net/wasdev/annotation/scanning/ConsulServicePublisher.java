@@ -76,7 +76,7 @@ public class ConsulServicePublisher {
 			// Make sure the id is unique even if multiple instances of a
 			// service exist
 			String id = generateID(endpoint);
-			System.out.println("Registering service with id " + id + " at " + endpoint.getName());
+			System.out.println("Registering service with id " + id + " at " + name);
 			service.setId(id);
 			serviceIds.add(id);
 			// Use the path, not the classname, as an identifier for the service

@@ -1,5 +1,7 @@
 package net.wasdev.annotation.scanning;
 
+import java.io.IOException;
+
 /**
  * (C) Copyright IBM Corporation 2015.
  *
@@ -15,9 +17,17 @@ package net.wasdev.annotation.scanning;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import java.net.*;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.Enumeration;
+
+import javax.json.JsonObject;
+import javax.json.JsonValue;
+
+import com.ibm.json.java.JSON;
 
 public class Endpoint {
 	private final String path;
@@ -32,17 +42,47 @@ public class Endpoint {
 	 */
 	private String healthCheckPath = "/";
 
-	public Endpoint(String host, int port, String path, String name) {
-		this.port = port;
+	public Endpoint(String configuredHost, int configuredPort, String path, String name) {
 		this.path = path;
-		// If we're listening on all interfaces, just choose one
-		if ("*".equals(host)) {
-			this.host = getInternetHost();
+
+		// If we're running in Bluemix, read the environment
+
+		String vcapHost = readHostnameFromVcapEnvironment();
+		if (vcapHost != null) {
+			host = vcapHost;
+			// If we're running on Cloud Foundry we know our port is 80
+			port = 80;
 		} else {
-			this.host = host;
+			// If we're listening on all interfaces, just choose one
+			if ("*".equals(configuredHost)) {
+				host = getInternetHost();
+			} else {
+				host = configuredHost;
+			}
+			port = configuredPort;
 		}
 		id = host + port + path;
 		this.name = (name == null) ? id : name;
+	}
+
+	private static String readHostnameFromVcapEnvironment() {
+		String vcapApplication = System.getenv().get("VCAP_APPLICATION");
+		if (vcapApplication != null) {
+			try {
+				JsonObject p = (JsonObject) JSON.parse(vcapApplication);
+				JsonValue uris = p.get("application_uris");
+				// Take the first uri (it might be a comma-separated list)
+				if (uris != null) {
+					return uris.toString().split(",")[0];
+				}
+			} catch (IOException e) {
+				// Let's log and ignore this case and drop through to the
+				// default case
+				e.printStackTrace();
+			}
+		}
+
+		return null;
 	}
 
 	/**
@@ -50,7 +90,7 @@ public class Endpoint {
 	 * addresses, and which are not the loopback interface (which some OSes will
 	 * default to for the getLocalHost() method)
 	 */
-	private String getInternetHost() {
+	private static String getInternetHost() {
 		String inetHost = "unknown";
 		try {
 
