@@ -16,7 +16,6 @@ package net.wasdev.annotation.scanning;
  * limitations under the License.
  */
 import java.io.IOException;
-
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -24,8 +23,9 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
 
-import com.ibm.json.java.JSONObject;
 import com.ibm.json.java.JSON;
+import com.ibm.json.java.JSONArray;
+import com.ibm.json.java.JSONObject;
 
 public class Endpoint {
 	private final String path;
@@ -68,10 +68,10 @@ public class Endpoint {
 		if (vcapApplication != null) {
 			try {
 				JSONObject p = (JSONObject) JSON.parse(vcapApplication);
-				String uris = (String) p.get("application_uris");
-				// Take the first uri (it might be a comma-separated list)
+				JSONArray uris = (JSONArray) p.get("application_uris");
+				// Take the first uri
 				if (uris != null) {
-					return uris.toString().split(",")[0];
+					return (String) uris.iterator().next();
 				}
 			} catch (IOException e) {
 				// Let's log and ignore this case and drop through to the
