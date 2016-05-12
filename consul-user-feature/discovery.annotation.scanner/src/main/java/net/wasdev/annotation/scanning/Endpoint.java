@@ -24,9 +24,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
 
-import javax.json.JsonObject;
-import javax.json.JsonValue;
-
+import com.ibm.json.java.JSONObject;
 import com.ibm.json.java.JSON;
 
 public class Endpoint {
@@ -69,8 +67,8 @@ public class Endpoint {
 		String vcapApplication = System.getenv().get("VCAP_APPLICATION");
 		if (vcapApplication != null) {
 			try {
-				JsonObject p = (JsonObject) JSON.parse(vcapApplication);
-				JsonValue uris = p.get("application_uris");
+				JSONObject p = (JSONObject) JSON.parse(vcapApplication);
+				String uris = (String) p.get("application_uris");
 				// Take the first uri (it might be a comma-separated list)
 				if (uris != null) {
 					return uris.toString().split(",")[0];
