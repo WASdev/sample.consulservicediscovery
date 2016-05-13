@@ -16,6 +16,7 @@ Import-Package: com.ecwid.consul.transport;version="1.0.0",
  com.ibm.wsspi.anno.info;version="1.0.0",
  com.ibm.wsspi.anno.targets;version="1.0.0",
  javax.management,
+ com.ibm.json.java,
  javax.ws.rs;version="2.0.0",
  javax.ws.rs.ext;version="2.0.0",
  org.osgi.service.component;version="1.2.0"
