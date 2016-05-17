@@ -41,6 +41,8 @@ public class Endpoint {
 	private String healthCheckPath = "/";
 
 	public Endpoint(String configuredHost, int configuredPort, String path, String name) {
+		// Sanitise out any double slashes
+		path = path.replaceAll("//", "/");
 		this.path = path;
 
 		// If we're running in Bluemix, read the environment
@@ -143,7 +145,7 @@ public class Endpoint {
 	 * be prefixed with '/'.
 	 */
 	public void setHealthCheckPath(String applicationPath) {
-		this.healthCheckPath = applicationPath;
+		this.healthCheckPath = applicationPath.replaceAll("//", "/");
 	}
 
 	@Override
