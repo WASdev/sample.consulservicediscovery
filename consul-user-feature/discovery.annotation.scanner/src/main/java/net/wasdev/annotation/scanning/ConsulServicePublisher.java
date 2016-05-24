@@ -87,13 +87,13 @@ public class ConsulServicePublisher {
 
 			// Add a health check, in case the service doesn't exit gracefully
 			NewService.Check check = new NewService.Check();
-			// We assume nothing important happens when pinging the application
-			// path
-			String pingableAddress = hostAddress + ":" + endpoint.getPort()
+			// We assume nothing too expensive or interesting happens when doing a get on an endpoint
+			String endpointAddress = hostAddress + ":" + endpoint.getPort()
 					+ endpoint.getHealthCheckPath();
 			System.out.println("Registering consul health check at "
-					+ pingableAddress);
-			check.setHttp(pingableAddress);
+					+ endpointAddress);
+			check.setInterval("30s");
+			check.setHttp("http://" + endpointAddress);
 			service.setCheck(check);
 
 			// register new service
