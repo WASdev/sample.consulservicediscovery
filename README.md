@@ -31,6 +31,10 @@ To use and configure the feature, add the following to the server.xml of your Li
 
 If you’re running in an environment like Bluemix, configuring services via environment variables is preferable to setting them up in the server.xml. If the CONSUL_SERVER environment variable is set, it will be preferred instead of the configured server. CONSUL_SERVER should be set to a host name or IP address. 
 
+### Example usage 
+
+The [catastrophe microservices sample](https://github.com/holly-cummins/catastrophe-microservices) shows how to configure a server to automatically register REST endpoints, and also how to do service lookups. For example, see one of the [server.xml](https://github.com/holly-cummins/catastrophe-scoring/blob/master/usr/servers/catastrophe-scoring/server.xml)s for the servers, for server configuration, and also the [ServiceFinder](https://github.com/holly-cummins/catastrophe-web/blob/master/src/main/java/catastrophe/discovery/ServiceFinder.java) class for lookup.
+
 ### Known limitations
 
 #### Build 
